@@ -1,0 +1,61 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}个人信息- 慕学在线网{% endblock %}
+
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>交流发布</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+<div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>交流发布</h1>
+			</div>
+
+        <div class="personal_des permessage">
+                <div class="head">
+                    <ul class="tab_header messagehead">
+                        <li class="active"><a style="font-size: 16px;color: red;" href="{% url 'users:my_article' %}">我的文章</a> </li>
+                        <li ><a href="{% url 'users:add_article' %}">发布文章 </a></li>
+{#                        <li><a href="{% url 'users:myfav_course' %}">公开课程</a></li>#}
+                    </ul>
+                </div>
+
+            </div>
+
+
+
+			<div class="messagelist">
+                    {% for article in article_list %}
+                    <div class="messages butler_list company company-fav-box" >
+                        <dl class="des fr" style="display: flex;border-bottom: 3px solid #aba6a6;flex-direction: column;">
+
+                                <h1 style="padding-top: 8px;text-align: center;"><a  href="{% url 'commucation:article' %}?id={{ article.id }}">{{ article.title }}</a></h1>
+
+{#                                <h1 style="padding-top: 8px;margin:0 auto"><a  href="{% url 'commucation:article' %}?id={{ article.id }}">{{ article.desc|slice:'40' }}</a></h1>#}
+                                <div>
+                                    <span class="c8 clear" style="padding-left: 20px">{{ article.desc|slice:'200' }}</span>
+                                    <div class="delete jsDeletearticle" data-favid="{{article.id}}"></div>
+                                </div>
+
+
+                            </ddd>
+                        </dl>
+                    </div>
+                    {% endfor %}
+                </div>
+		</div>
+	</div>
+{% endblock %}
+
+
+
+
+

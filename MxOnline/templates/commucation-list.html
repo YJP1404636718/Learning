@@ -1,0 +1,45 @@
+<!-- 继承base.html 网页的内容 -->
+{% extends 'base-test.html' %}
+<!-- 加载静态文件 -->
+{% load staticfiles  %}
+<!-- 声明这是左边的内容部分 -->
+{% block left_content %}
+
+    <!-- 广告 -->
+{#    {% include 'ad.html' %}#}
+
+
+    <!-- banner代码 结束 -->
+    <div class="topnews">
+      <h2>最新文章</h2>
+
+    <!-- 循环最新文章列表  -->
+    {% for article in all_comments %}
+    <div class="blogs">
+        <ul>
+        <!-- 从URL里面调用   /article/?id=7 -->
+          <h3><a href="{% url 'commucation:article' %}?id={{ article.id }}">{{ article.title }}</a></h3>
+          <p>{{ article.desc }}</p>
+          <p class="autor">
+              <span class="lm f_l">
+                  {% for tag in article.tag.all %}
+                  <a href="">{{ tag }}</a>&nbsp;
+                  </span>
+                  {% endfor %}
+              <!-- 使用date过滤器，对时间进行输出 -->
+              <span class="dtime f_l">{{ article.date_publish | date:'Y-m-d' }}</span>
+              <span class="viewnum f_r">浏览（<a href="/">{{ article.click_count }}</a>）</span>
+              <span class="pingl f_r">评论（<a href="/">{{ article.comment_set.all.count }}</a>）</span>
+          </p>
+        </ul>
+      </div>
+
+    {% endfor %}
+
+    </div>
+
+<!--这里用到一个 include 技巧，把pagination的模板代码写在单独的pagination.html文件中，
+这样哪里需要用到哪里就 include 进来就行，提高代码的复用性。-->
+{% include 'pagination.html' %}
+
+    {% endblock %}

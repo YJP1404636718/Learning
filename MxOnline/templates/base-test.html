@@ -1,0 +1,339 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ SITE_NAME }}</title>
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+<title>{% block title %}慕学在线网{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{#    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">#}
+{% block custom_css %}{% endblock %}
+
+{#<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>#}
+{#<script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>#}
+
+<meta name="keywords" content="{{ SITE_NAME }}" />
+<meta name="description" content="{{ SITE_DESC   }}" />
+<link href='{% static 'css/base.css' %}' rel="stylesheet">
+<link href='{% static 'css/index.css' %}' rel="stylesheet">
+{#   {% block custom_css  %}#}
+{#    {% endblock %}#}
+<script type="text/javascript" src='{% static 'js/jquery.mins.js' %}'></script>
+<script type="text/javascript" src='{% static 'js/sliders.js' %}'></script>
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+{#{% block custom_js %}#}
+{#    {% endblock %}#}
+</head>
+<body>
+
+<section class="headerwrap ">
+    <header>
+		<div  class=" header">
+ 			<div class="top" style="">
+
+                <div class="wp">
+{#					<div class="fl"><p>服务电话：<b>33333333</b></p></div>#}
+                    <a href="{% url 'index' %}"><img class="fl" src="{% static 'images/666.png' %}" height="42px" style="padding: 15px"/></a>
+
+{#                    <li {% if request.path == '/' %}class="active"{% endif %}>#}
+                    <a {% if request.path == '/' %}class="haha"{% endif %}  style="line-height:72px;font-size:17px;color: #4D555D; padding-left: 20px" href="{% url 'index' %}">首页</a>
+                    <a {% if request.path|slice:'7' == '/course' %}class="haha"{% endif %}  style="line-height:72px;font-size:17px;color: #4D555D;padding-left: 40px" href="{% url 'course:course_list' %}?direction=1">课程展示</a>
+                    <a {% if request.path|slice:'12' == '/org/teacher' %}class="haha"{% endif %} style="line-height:72px;font-size:17px;color: #4D555D;padding-left: 40px" href="{% url 'org:teacher_list' %}">授课教师</a>
+                    <a {% if request.path|slice:'9' == '/org/list' %} class="haha" {% endif %}   style="line-height:72px;font-size:17px;color: #4D555D;padding-left: 40px" href="{% url 'org:org_list' %}">授课机构</a></li>
+                    <a {% if request.path|slice:'9' == '/commucation/list' %} class="haha" {% endif %}   style="line-height:72px;font-size:17px;color: #4D555D;padding-left: 40px" href="{% url 'commucation:list' %}">交流天地</a></li>
+                    {#                      </li> #}
+
+					<!--登录后跳转-->
+                        {% if request.user.is_authenticated %}
+                            <div class="personal">
+                            <dl class="user fr">
+
+                                <dt><a href="{% url 'users:user_info' %}"><img width="35px" height="35px"  src="{{ MEDIA_URL }}{{ request.user.image }}"></a></dt>
+                                <dd>{{ user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                            </dl>
+                            <div class="userdetail">
+                            	<dl>
+	                                <dt><img  width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+	                                <dd>
+	                                    <h2>昵称：{{ request.user.nick_name }}</h2>
+	                                    <p>用户名：{{ request.user.username }}</p>
+	                                </dd>
+                                </dl>
+                                <div class="btn">
+	                                <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
+	                                <a class="fr" href="{% url 'logout' %}">退出</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                            <a href="{% url 'users:my_message' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.unread_nums }}</span></div>
+                        </a>
+
+
+                            {% else %}
+                            <a class="fr registerbtn"  href="{% url 'register' %}">注册</a>
+                            <a class="fr registerbtns">/</a>
+{#                            <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>#}
+                            <a  class="fr loginbtn" href="{% url 'login' %}">登录</a>
+                        {% endif %}
+
+				</div>
+			</div>
+
+            <div class="middle">
+                <div class="wp">
+                <a href="{% url 'index' %}"><img  class="fl" src="{% static 'images/logo-course.png' %}" style="padding-top: 10px;"/></a>
+
+                    <div class="searchbox fr">
+                        <div class="selectContainer fl">
+                            <span class="selectOption" id="jsSelectOption" data-value="course">
+                                课程
+                            </span>
+
+                            <ul class="selectMenu" id="jsSelectMenu">
+                                <li data-value="course">课程</li>
+                                <li data-value="org">课程机构</li>
+                                <li data-value="teacher">授课老师</li>
+                            </ul>
+                        </div>
+                        <input id="search_keywords" class="fl" type="text" value="" placeholder="请输入搜索内容"/>
+                        <img class="search_btn fr" id="jsSearchBtn" src="{% static 'images/search_btn.png' %}"/>
+                    </div>
+                </div>
+            </div>
+
+{#			<nav>#}
+{#				<div class="nav">#}
+{#					<div class="wp">#}
+{#						<ul>#}
+{#							<li {% if request.path == '/' %}class="active"{% endif %}><a href="{% url 'index' %}">首页</a></li>#}
+{#							<li {% if request.path|slice:'7' == '/course' %}class="active"{% endif %}>#}
+{#								<a href="{% url 'course:course_list' %}?direction=1">课程路径#}
+{#                                    <ul class="selectMenu" id="jsSelectMenu">#}
+{##}
+{#                            </ul>#}
+{#                                    <img class="hot" src="{% static 'images/nav_hot.png' %}">#}
+{#								</a>#}
+{#							</li>#}
+{##}
+{#							<li {% if request.path|slice:'12' == '/org/teacher' %}class="active"{% endif %}>#}
+{#								<a href="{% url 'org:teacher_list' %}">授课教师</a>#}
+{#							</li >#}
+{##}
+{#							<li {% if request.path|slice:'9' == '/org/list' %} class="active" {% endif %} >#}
+{#                                <a href="{% url 'org:org_list' %}">授课机构</a></li>#}
+{##}
+{##}
+{##}
+{#						</ul>#}
+{##}
+{##}
+{#					</div>#}
+{#				</div>#}
+{#			</nav>#}
+
+			</div>
+    </header>
+</section>
+
+<header>
+  <div class="logo">
+      <h1>{{ SITE_NAME }}</h1>
+      <p>{{ SITE_DESC }}</p>
+  </div>
+  <nav id="topnav" class="f_r" background="blue">
+{#  <ul class="fl tab_header">#}
+{#					<li class="active"><a href="?sort=">全部</a> </li>#}
+      <a href="?sort=hot">人气</a>
+      <a href="{% url 'users:add_article' %}">发布文章</a>
+      <div style="border-top:1px solid #eaeaea;margin-top:30px;">
+                        <a class="button btn-green btn-w100" id="jsUserResetPwd" style="margin:80px auto;width:100px;">修改密码</a>
+                    </div>
+      </div>
+{#  </ul>#}
+    <ul>
+      {% for category in category_list %}
+
+      <a href="{% url 'category' %}?cid={{ category.id }}">{{ category.name }}</a>
+      {% endfor %}
+    </ul>
+    <script src="{% static 'js/nav.js' %}"></script>
+  </nav>
+</header>
+<article>
+  <div class="l_box f_l">
+
+    {% block left_content %}
+
+    {% endblock %}
+
+  </div>
+  <div class="r_box f_r">
+    <div class="tit01">
+      <h3>关注我</h3>
+      <div class="gzwm">
+        <ul>
+          <li><a class="xlwb" href="#" target="_blank">新浪微博</a></li>
+          <li><a class="txwb" href="#" target="_blank">腾讯微博</a></li>
+          <li><a class="rss" href="portal.php?mod=rss" target="_blank">RSS</a></li>
+          <li><a class="wx" href="mailto:admin@admin.com">邮箱</a></li>
+        </ul>
+      </div>
+    </div>
+    <!--tit01 end-->
+    <div class="moreSelect" id="lp_right_select">
+      <script>
+window.onload = function ()
+{
+  var oLi = document.getElementById("tab").getElementsByTagName("li");
+  var oUl = document.getElementById("ms-main").getElementsByTagName("div");
+
+  for(var i = 0; i < oLi.length; i++)
+  {
+    oLi[i].index = i;
+    oLi[i].onmouseover = function ()
+    {
+      for(var n = 0; n < oLi.length; n++) oLi[n].className="";
+      this.className = "cur";
+      for(var n = 0; n < oUl.length; n++) oUl[n].style.display = "none";
+      oUl[this.index].style.display = "block"
+    }
+  }
+}
+</script>
+      <div class="ms-top">
+        <ul class="hd" id="tab">
+{#          <li class="cur"><a href="/">评论排行</a></li>#}
+          <li><a>浏览排行</a></li>
+
+          <li><a>站长推荐</a></li>
+        </ul>
+      </div>
+      <div class="ms-main" id="ms-main">
+        <div style="display: block;" class="bd bd-news">
+          <ul>
+            {% for click in click_lists  %}
+            <li><a href="{% url 'commucation:article' %}?id={{ click.id }}" target="_blank">{{ click.title }}</a></li>
+
+
+
+              {% endfor %}
+
+          </ul>
+        </div>
+{#        <div  class="bd bd-news" >#}
+{#          <ul>#}
+{#              {% for click in click_lists  %}#}
+{#            <li><a href="/" target="_blank">{{ click.title }}</a></li>#}
+{#              {% endfor %}#}
+{#          </ul>#}
+{#        </div>#}
+
+
+
+
+        <div class="bd bd-news">
+          <ul>
+              {% for recommend in recommend_lists %}
+                    <li><a href="{% url 'commucation:article' %}?id={{ recommend.id }}" target="_blank">{{ recommend.title }}</a></li>
+{#            <li><a href="/" target="_blank">你面对的是生活而不是手机</a></li>#}
+{#            <li><a href="/" target="_blank">住在手机里的朋友</a></li>#}
+{#            <li><a href="/" target="_blank">豪雅手机正式发布! 在法国全手工打造的奢侈品</a></li>#}
+{#            <li><a href="/" target="_blank">教你怎样用欠费手机拨打电话</a></li>#}
+{#            <li><a href="/" target="_blank">原来以为，一个人的勇敢是，删掉他的手机号码...</a></li>#}
+              {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!--ms-main end -->
+    </div>
+    <!--切换卡 moreSelect end -->
+
+{#    <div class="cloud">#}
+{#      <h3>标签云</h3>#}
+{#      <ul>#}
+{#        <li><a href="/">个人博客</a></li>#}
+{#        <li><a href="/">web开发</a></li>#}
+{#        <li><a href="/">前端设计</a></li>#}
+{#        <li><a href="/">Html</a></li>#}
+{#        <li><a href="/">CSS3</a></li>#}
+{#        <li><a href="/">Html5+css3</a></li>#}
+{#        <li><a href="/">百度</a></li>#}
+{#        <li><a href="/">Javasript</a></li>#}
+{#        <li><a href="/">web开发</a></li>#}
+{#        <li><a href="/">前端设计</a></li>#}
+{#        <li><a href="/">Html</a></li>#}
+{#        <li><a href="/">CSS3</a></li>#}
+{#        <li><a href="/">Html5+css3</a></li>#}
+{#        <li><a href="/">百度</a></li>#}
+{#      </ul>#}
+{#    </div>#}
+{#    <div class="tuwen">#}
+{#    <a href=" / "><h3>文章归档</h3></a>#}
+{#    <a href=" {{ archive }} "><h3>文章归档</h3></a>#}
+{##}
+{#       <ul>#}
+{##}
+{#       {% for archive in archive_list %}#}
+{#        <li>#}
+{#            <p><span class="tutime font-size-18"><a href=''>{{ archive }}</a></span></p>#}
+{#          <p><span class="tutime font-size-18"><a href='{% url 'archive' %}?year={{ archive | slice:":4" }}&month={{ archive | slice:"5:7" }}'>{{ archive }}</a></span></p>#}
+{#        </li>#}
+{#          {% endfor %}#}
+{##}
+{##}
+{#      </ul>#}
+{#    </div>#}
+    <div class="links">
+      <h3>友情链接</h3>
+      <ul>
+        <li><a href="/">web开发</a></li>
+        <li><a href="/">前端设计</a></li>
+        <li><a href="/">Html</a></li>
+        <li><a href="/">CSS3</a></li>
+        <li><a href="/">Html5+css3</a></li>
+        <li><a href="/">百度</a></li>
+      </ul>
+    </div>
+  </div>
+  <!--r_box end -->
+</article>
+<p class="line"></p>
+<footer>
+		<div class="footer">
+{#			<div class="wp">#}
+{#				<ul class="cont">#}
+{#					<li class="logo"><a href=""><img  class="fl" src="{% static 'images/logo_greenx2.png' %}" style="padding-top: 20px; height: 72px; width: 400px;"/></a></li>#}
+{#					<li class="code"><img src="{% static 'images/code.jpg' %}"/><p class="center">扫描关注微信</p></li>#}
+{#					<li class="third"><img class="fl" src="{% static 'images/tell.png' %}"/><p class="tell">66625254</p><p class="time">周一至周日 9:00-18:00</p></li>#}
+{#				</ul>#}
+{##}
+{#			</div>#}
+{#			<p class="line"></p>#}
+			<div class="wp clear">
+                <span class="fl" style="padding-top: 40px;">企业合作 </span>
+                <span class="fl" style="padding-top: 40px;padding-left: 20px;">人才招聘 </span>
+                <span class="fl" style="padding-top: 40px;padding-left: 20px;">联系我们 </span>
+                <span class="fl" style="padding-top: 40px;padding-left: 20px;">讲师招募 </span>
+                <span class="fl" style="padding-top: 40px;padding-left: 20px;">常见问题 </span>
+                <span class="fl" style="padding-top: 40px;padding-left: 20px;">意见反馈 </span>
+                <span class="fl" style="padding-top: 40px;padding-left: 20px;">友情链接 </span>
+                <span class="fr" style="padding-top: 40px;">copyright ? 2019 ICP备案证书号：蜀ICP备xxxxx号-1</span>
+			</div>
+		</div>
+    <div id="tbox"> <a id="togbook" href="/"></a> <a id="gotop" href="javascript:void(0)"></a> </div>
+
+	</footer>
+
+
+</body>
+</html>

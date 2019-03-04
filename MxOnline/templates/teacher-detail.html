@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+
+{% block titile %}
+讲师详情 | mtianyan慕课小站
+{% endblock %}
+
+{% load staticfiles %}
+<!--crumbs start-->
+{% block custom_bread %}
+
+{% endblock %}
+{% block content %}
+    <section>
+	<div class="butler-detail-box butler-diaryd-box clearfix">
+        <div class="fl list" style="padding-top: 0px;">
+            <div class="butler_detail_list clearfix" >
+
+
+                <div class="brief" style="background: rgba(0,0,0,.6);padding-top: 0px;">
+{#                {% block custom_bread %}#}
+                <section>
+                    <div class="wp">
+                        <div class="crumbs">
+                                        <ul>
+                            <li><a class="nnn" href="{% url 'index' %}">首页&nbsp;/&nbsp;</a></li>
+                            <li><a class="nnn" href="{% url 'org:teacher_list' %}">授课教师&nbsp;/&nbsp;</a></li>
+                            <li ><a class="nnn">讲师详情</a></li>
+                        </ul>
+                        </div>
+                    </div>
+                </section>
+{#                {% endblock %}#}
+                    <dl class="des">
+                        <dt style="height: 200px;margin-top: 80px;">
+                            <div class="picpic">
+                                <img width="100" height="100" src="{{ MEDIA_URL }}{{ teacher.image }}"/>
+                            </div>
+                            <div class="btn">
+                                <span class="fl btn1 collectionbtn" id="jsLeftBtn">
+                                    {% if has_teacher_faved %} 已收藏{% else %}收藏{% endif %}
+                                </span>
+                                <span class="fr btn2 shareBtn bdsharebuttonbox" data-tag="share_{{ teacher.id }}">
+                                    <span class="fl">分享</span>
+                                    <a href="#" class="bds_more" data-cmd="more"></a>
+                                </span>
+                            </div>
+
+
+
+
+                        </dt>
+                        <div >
+
+                            <a href="{% url 'org:teacher_detail' teacher.id %}">
+                                <h1 >{{ teacher.name }}</h1>
+                                <h2>{{ teacher.work_position }}</h2>
+{#                                <h1>{{ teacher.name }}<span class="key picbig">金牌讲师</span></h1>#}
+                            </a>
+                            <div class="splitline" style="width: 640px;height: 1px;background-color: rgba(255,255,255,.2);margin: 16px auto 16px;"></div>
+                                <h3>工作年限：{{ teacher.work_years }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                就职公司：{{ teacher.work_company }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{#                                工作职位：{{ teacher.work_position }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#}
+                                教学特点：{{ teacher.points }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                年龄：{{ teacher.age }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                                </h3>
+
+                        </div>
+
+
+                    </dl>
+                </div>
+
+            </div>
+         <img  style="width: 100%;height: 535px;" src="{% static 'images/teacher.png' %}" class="jqzoom" />
+
+            <div class="wp butler_detail_cont clearfix" style="margin-top: 30px;">
+
+                <div class="left layout">
+				<div class="head">
+					<ul class="tab_header">
+						<li class="active">全部课程</li>
+					</ul>
+				</div>
+                    <div id="inWindow">
+                    <div class="tab_cont " id="content">
+					<div class="group_list">
+
+                            {% for course in all_course.object_list %}
+                              <div class="box">
+                                <a href="{% url 'course:course_detail' course.id %}">
+                                    <img style="width: 280px;height: 155px;" class="scrollLoading" src="{{ MEDIA_URL }}{{ course.image }}"/>
+                                </a>
+                                <div class="des" style="height: 90px;">
+                                    <a href="{% url 'course:course_detail' course.id %}">
+                                        <h2>{{ course.name }}</h2>
+                                    </a>
+                                    <span class="fl"><i class="key">{{ course.direction }}</i></span>
+                                    <span class="fls" style="color: #00a0e9;"><i class="keys" style="padding-left: 70px;">{{ course.get_degree_display }}</i></span>
+                                    <span class="fr">学习人数：{{ course.students }}&nbsp;&nbsp;</span>
+
+                                </div>
+                                <div class="bottom">
+                                    <a href="{% url 'course:course_detail' course.id %}"><span class="fl">{{ course.course_org.name }}</span></a>
+                                    <span class="star fr  notlogin
+                                        " data-favid="15">
+                                         {{ course.fav_nums }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_course.has_previous %}
+                                <li class="long"><a href="?{{ all_course.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_course.pages %}
+                                {% if page %}
+                                    {% ifequal page all_course.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_course.has_next %}
+                                <li class="long"><a href="?{{ all_course.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+
+                        </div>
+                    </div>
+                <!--<div class="pageturn">-->
+                    <!--<ul class="pagelist">-->
+                        <!--<li class="active"><a href="?page=1">1</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            </div>
+
+
+                <div class="fr list" style="padding-top: 0px;">
+             <div class="butler_detail_list">
+                <div class="right butler-company-box">
+                <div class="head">
+                    <h1>{{ teacher.org.name }}</h1>
+                    <p>知名高校，权威教学</p>
+                </div>
+                <div class="pic">
+                    <a href="{% url 'org:org_home' teacher.org.id %}">
+                        <img style="width: 230px;height: 150px;border-radius:10px;" src="{{ MEDIA_URL }}{{ teacher.org.image }}"/>
+                    </a>
+                </div>
+                <a href="{% url 'org:org_home' teacher.org.id %}">
+                    <h2 class="center">{{ teacher.org.name }}</h2>
+                </a>
+                <p class="center tell">地址：{{ teacher.org.address }}</p>
+                <a class="btn" id="jsRightBtn">
+                    {% if has_org_faved %} 已收藏{% else %}收藏{% endif %}</a>
+            </div>
+            </div>
+            <div class="butler_detail_cont">
+                <div class="butler_list_box">
+                    <div class="right layout">
+                        <div class="head">讲师排行榜</div>
+
+                        {% for hot_teacher in sorted_teacher %}
+                            <dl class="des">
+{#                            <span class="num fl">{{ forloop.counter }}</span>#}
+                            <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
+                                <dt>
+                                    <img style="width: 50px;" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_teacher.image }}"/>
+                                </dt>
+                            </a>
+                            <dd style="width: 300px;">
+                                <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
+                        <h1 title="{{ hot_teacher.name|slice:":11" }}">{{ hot_teacher.name|truncatewords:"6" }} <a>老师</a></h1>
+
+                    </a>
+
+{#                    <p>工作年限：<span>{{ hot_teacher.work_years }}年</span></p>#}
+                    <p style="padding-left: 70px;padding-top: 5px;"><span style="color: #00a0e9;">{{ hot_teacher.work_years }}年经历</span></p>
+                    <p style="padding-left: 70px;padding-top: 5px;"><span style="color: #ff7800;">{{ hot_teacher.work_company }}</span></p>
+
+                            </dd>
+                        </dl>
+                        {% endfor %}
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+
+	</div>
+</section>
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+//收藏分享
+function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url "org:add_fav" %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/?next={{ request.path }}";
+                }else{
+                    current_elem.text('收藏')
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+
+$('#jsLeftBtn').on('click', function(){
+    add_fav($(this), {{ teacher.id }}, 3);
+});
+
+$('#jsRightBtn').on('click', function(){
+    add_fav($(this), {{ teacher.org.id }}, 2);
+});
+
+
+</script>
+<script>
+
+    window._bd_share_config = {
+        "common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":["mshare","qzone","tsina","weixin","sqq"],"bdPic":"","bdStyle":"0","bdSize":"16"},
+        share : [
+                   {
+			"tag" : "share_{{ teacher.id }}",
+			"bdSize" : 16,
+                       "bdText":"授课教师-{{ teacher.name }}-mtianyan慕课小站",
+                       "bdDesc": "我在#mtianyan慕课小站#发现了老师“{{ teacher.name }}”，对我们学习很有帮助，一起来看看吧",
+                        "bdUrl": 'http://mtianyan.cn{% url 'org:teacher_detail' teacher.id %}',
+
+
+		},
+]
+
+    }
+	//以下为js加载部分
+	with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+{% endblock %}

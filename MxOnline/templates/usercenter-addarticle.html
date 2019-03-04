@@ -1,0 +1,141 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}个人信息- 慕学在线网{% endblock %}
+{% load staticfiles  %}
+
+
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>交流发布</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+
+
+{% block right_content %}
+    <script src="/static/ueditor/ueditor.config.js" type="text/javascript"></script>
+
+    <script src="/static/ueditor/ueditor.all.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+            var ue = UE.getEditor('container',{
+
+                serverUrl: "/users/add_article/",
+                initialFrameHeight:300,
+                initialFrameWidth:800,
+
+            });
+     </script>
+
+<div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>交流发布</h1>
+			</div>
+
+        <div class="personal_des permessage">
+                <div class="head">
+                    <ul class="tab_header messagehead">
+                        <li><a href="{% url 'users:my_article' %}">我的文章</a> </li>
+                        <li  class="active" ><a style="font-size: 16px;color: red;" href="{% url 'users:add_article' %}">发布文章 </a></li>
+{#                        <li><a href="{% url 'users:myfav_course' %}">公开课程</a></li>#}
+                    </ul>
+                </div>
+
+            </div>
+
+
+
+			<div class="messagelist" style="height: 1800px;">
+                  <form action="{% url 'users:add_article' %}" method="post">
+                        {% csrf_token %}
+
+                  <div class="form-group">
+                            <label  class="control-label " style="width:50px;float: left;padding-top:32px;padding-left: 40px">
+                            标题
+                            </label>
+                        <div class="controls ">
+                            <input   id="title" name="title" value="" style="float:right; width: 85%;height: 34px;margin-top: 20px;margin-right:2rem;font-size: 14px;line-height: 1.428571429; border: 1px solid #cccccc;border-radius: 4px;">
+                        </div>
+                  </div>
+
+                      <div class="form-group">
+                            <label  class="control-label " style="width:50px;float: left;padding-top:32px;padding-left: 40px">
+                            描述
+                            </label>
+                        <div class="controls ">
+                            <input   id="desc" name="desc" value="" style="float:right; width: 85%;height: 34px;margin-top: 20px;margin-right:2rem;font-size: 14px;line-height: 1.428571429; border: 1px solid #cccccc;border-radius: 4px;">
+                        </div>
+                  </div>
+
+{#                      <div class="form-group">#}
+{#                            <label  class="control-label " style="width:50px;float: left;padding-top:32px;padding-left: 40px">#}
+{#                            内容#}
+{#                            </label>#}
+{#                        <div class="controls ">#}
+{#                            <input   id="content" name="content" value="" style="float:right; width: 85%;height: 34px;margin-top: 20px;margin-right:30px;font-size: 14px;line-height: 1.428571429; border: 1px solid #cccccc;border-radius: 4px;">#}
+{#                        </div>#}
+{#                  </div>#}
+
+
+                      <div class="form-group">
+
+                        <label  class="control-label " style="width:50px;float: left;padding-top:32px;padding-left: 40px">
+                            内容
+                        </label>
+                        <div class="col-md-4"  style="float: right;margin-right: 2rem;margin-top: 20px;height:200px;">
+                            <script id="container" name="container" type="text/platin">
+                            </script>
+
+                            <input   id="submit" type="button" id="submit" tabindex="5" value="提交" class="button" style="text-align: center; height: 34px;width:60px;background:red;margin-top: 20px;font-size: 14px;border: 1px solid #cccccc;border-radius: 4px;">
+
+                        </div>
+                    </div>
+
+
+                  </form>
+                </div>
+		</div>
+	</div>
+    <script>
+      $("#submit").on("click",function () {
+          var _this = $(this);
+          var title = $("#title").val()
+          var desc = $("#desc").val()
+          var content = UE.getEditor('container').getContent();
+
+        $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/users/add_article/",
+                data: {
+                    title: title,
+                    desc: desc,
+                    content:content,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                async: true,
+                success: function(data) {
+                    if(data.status=="success"){
+                        alert("成功")
+                        Dml.fun.winReload();}
+
+                    if(data.status=="exists"){
+                        alert("存在违禁关键词，请重新输入")
+
+                    }
+                }
+            });
+      })
+    </script>
+{% endblock %}
+
+
+
+
+

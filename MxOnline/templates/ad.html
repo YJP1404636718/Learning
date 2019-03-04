@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<div class="banner">
+      <div id="slide-holder">
+        <div id="slide-runner">
+            <a href="/" target="_blank">
+{#                <img id="slide-img-1" src="{% static 'images/a1.jpg' %}"  href="{% url 'article' %}?id=2" /></a>#}
+                <img id="slide-img-1" src="{% static 'images/images/a1.jpg' %}"  href="" /></a>
+
+            <a href="" target="_blank">
+                <img id="slide-img-2" src="{% static 'images/images/a2.jpg' %}"  alt="" /></a>
+
+            <a href="/" target="_blank">
+                <img id="slide-img-3" src="{% static 'images/images/a3.jpg' %}"  alt="" />
+
+            </a> <a href="/" target="_blank">
+            <img id="slide-img-4" src="{% static 'images/images/a4.jpg' %}"  alt="" /></a>
+          <div id="slide-controls">
+            <p id="slide-client" class="text"><strong></strong><span></span></p>
+            <p id="slide-desc" class="text"></p>
+            <p id="slide-nav"></p>
+          </div>
+        </div>
+
+      </div>
+      <script>
+    if(!window.slider) {
+        console.log(window.slider)
+    var slider={};
+  }
+
+  {#slider.data= [#}
+  {#    {#}
+  {#      "id":"slide-img-1", // 与slide-runner中的img标签id对应#}
+  {#      "client":"222",#}
+  {#      "desc":"111" //这里修改描述#}
+  {#  },#}
+  {##}
+  {#    {#}
+  {#      "id":"slide-img-1", // 与slide-runner中的img标签id对应#}
+  {#      "client":"222",#}
+  {#      "desc":"111" //这里修改描述#}
+  {#  },#}
+
+slider.data= [
+
+      {% for article in articles %}
+    {
+        "id":"slide-img-1", // 与slide-runner中的img标签id对应
+        "client":"{{ article.title }}",
+        "desc":"{{ article.desc }}" //这里修改描述
+    },
+      {% endfor %}
+
+  ];
+
+    </script>
+    </div>
+

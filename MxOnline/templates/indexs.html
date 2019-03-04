@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+<title>{% block title %}课程机构列表 - 慕学在线网{% endblock %}</title>
+{% load staticfiles %}
+{% block custom_bread %}
+
+{% endblock %}
+{% block custom_js %}
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="banner" style="padding-top: 30px;">
+			<div class="wp">
+				<div class="fl">
+					<div class="imgslide">
+						<ul class="imgs">
+                            {% for banner_course in banner_courses %}
+                            <li>
+                                    <a href="{% url 'course:course_detail' banner_course.id %}">
+                                        <img width="1200" height="478" style="border-radius: 10px" src="{{ MEDIA_URL }}{{ banner_course.image }}" />
+                                    </a>
+                                </li>
+                            {% endfor %}
+						</ul>
+					</div>
+					<div class="unslider-arrow prev"></div>
+					<div class="unslider-arrow next"></div>
+				</div>
+
+				</div>
+
+
+			</div>
+
+	<section>
+		<div class="module">
+			<div class="wp">
+				<h1 style="padding-top: 80px;">课程展示</h1>
+				<div class="module1 eachmod">
+{#					<div class="module1_1 left">#}
+{#						<img width="228" height="470" src="/static/images/f2fbae82ea4c5edadd54e8255b26fa82.jpeg"/>#}
+{#						<p class="fisrt_word">名师授课<br/>专业权威</p>#}
+{#						<a class="more" href="{% url 'course:course_list' %}?direction=1">查看更多课程 </a>#}
+{#					</div>#}
+					<div class="right group_list">
+                            {% for course in courses  %}
+
+                            <div class="module1_{{ forloop.counter|add:4 }} box" >
+                                <a href="{% url 'course:course_detail' course.id %}">
+                                    <img style="width: 229px;" src="{{ MEDIA_URL }}{{ course.image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'course:course_detail' course.id %}">
+                                        <h2 title="{{ course.name }}">{{ course.name|slice:":12" }}</h2>
+                                    </a>
+                                    <span class="fl"><i class="key">{{ course.direction }}</i></span>
+                                    <span class="fls" style="color: #00a0e9;"><i class="keys" style="padding-left: 70px;">{{ course.get_degree_display }}</i></span>
+
+                                    <span class="fr">学习人数：{{ course.students }}</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="fl" title="{{ course.course_org.name }}">{{ course.course_org.name }}</span>
+                                    <span class="star fr">{{ course.fav_nums }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="module greybg">
+			<div class="wp">
+				<h1>课程机构</h1>
+				<div class="module3 eachmod">
+{#					<div class="module3_1 left">#}
+{#						<img width="228" height="510" src="/static/images/3546c67b9b6323851a146839693783fe.jpg"/>#}
+{#						<p class="fisrt_word">名校来袭<br/>权威认证</p>#}
+{#						<a class="more" href="{% url 'org:org_list' %}">查看更多机构 </a>#}
+{#					</div>#}
+					<div class="right">
+						<ul>
+
+                            {% for org in course_orgs %}
+
+                                <li class="">
+                                    <a href="{% url 'org:org_home' org.id %}">
+                                        <div class="company">
+                                            <img width="184" height="120" src="{{ MEDIA_URL }}{{ org.image }}"/>
+                                            <div class="score">
+                                                <div class="circle">
+                                                    <h2>{{ org.tag }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p><span class="key" title="{{ org.name }}">{{ org.name }}</span></p>
+                                    </a>
+                                </li>
+
+                            {% endfor %}
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock %}
+
+
